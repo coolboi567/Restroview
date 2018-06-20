@@ -207,7 +207,7 @@ require_once 'header.php';
 						</div>
 						<h3 class="pl-2 ">(<span id='avgrating_<?php echo $rid; ?>'><?php echo $averageRating; ?></span>)</h3>
 					</div>
-					<div class="row pt-3 review">
+					<div class="mt-3 review">
 						<?php
 						$res = mysqli_query($db, "SELECT COUNT(*) as count from reviews as rev,ratings as rat where rev.ratingid=rat.id and rat.rid={$_GET['id']}");
 						$fetchreview = mysqli_fetch_array($res);
@@ -259,37 +259,38 @@ require_once 'header.php';
 						?>
 					</div>
 				</div>
-				<div class="col-sm-2"></div>
 			</div>
-			<?php
-		}
-		?>
-
-		<div id="myBtn" class="btn-back-to-top bg0-hov">
-			<span class="symbol-btn-back-to-top">
-				<i class="fa fa-angle-double-up" aria-hidden="true"></i>
-			</span>
+			<div class="col-sm-2"></div>
 		</div>
+		<?php
+	}
+	?>
+
+	<div id="myBtn" class="btn-back-to-top bg0-hov">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
 	</div>
-	<!--===============================================================================================-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="js/jAlert-v3.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-	<!--===============================================================================================-->
-	<script type="text/javascript" src="js/main.js"></script>
-	<!--===============================================================================================-->
-	<script src="js/jquery.barrating.min.js"></script>
-	<script type="text/javascript">
-		$(function() {
-			$('.rating').barrating({
-				theme: 'fontawesome-stars',
-				onSelect: function(value, text, event) {
+</div>
+<!--===============================================================================================-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="js/jAlert-v3.min.js"></script>
+<!--===============================================================================================-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<!--===============================================================================================-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="js/main.js"></script>
+<!--===============================================================================================-->
+<script src="js/jquery.barrating.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('.rating').barrating({
+			theme: 'fontawesome-stars',
+			onSelect: function(value, text, event) {
 					// Get element id by data-id attribute
 					var el = this;
 					var el_id = el.$elem.data('id');
@@ -323,74 +324,72 @@ require_once 'header.php';
 					}
 				}
 			});
-			$("form.submitreview").on("submit",function(e) {
-				e.preventDefault();
-				var heading = $("#heading").val();
-				var review = $("#review").val();
-				var rid = $("#rid").val();
+		$("form.submitreview").on("submit",function(e) {
+			e.preventDefault();
+			var heading = $("#heading").val();
+			var review = $("#review").val();
+			var rid = $("#rid").val();
 				// AJAX Request
 				$.ajax({
 					url: 'review-ajax.php',
-					type: 'post',
+					method: 'post',
 					data: { rid: rid, heading: heading, review: review },
 					dataType: 'json',
-					success: function(data) {
-						// Update average
-						if(data['error']) {
-							if(data['error']=="No Ratingid"){
-								psAlert("Warning","Please give ratings befor submiting review","yellow");
-								$("taberror").html('<div class="alert failure"><span class="closebtn">&times;</span><strong>Error : Please give rating before submiting review.</strong></div>').show();
-							}
-							if(data['error']=="No Session") {
-								psAlert("Error","Not Rating ID found","red");
-								$("taberror").html('<div class="alert failure"><span class="closebtn">&times;</span><strong>Error : No session was found. Please, login first.</strong></div>').show();
-							}
+				}).done(function(data) {
+					// Update average
+					if(data['error']) {
+						if(data['error']=="No Ratingid"){
+							psAlert("Warning","Please give ratings befor submiting review","yellow");
+							$("taberror").html('<div class="alert failure"><span class="closebtn">&times;</span><strong>Error : Please give rating before submiting review.</strong></div>').show();
 						}
-						else {
-							psAlert("Success","Review Successfully Added !!","green");
-							var count = data['countReview'];
-							$('form.submitreview').remove();
-							window.location.reload(false); 
+						if(data['error']=="No Session") {
+							psAlert("Error","Not Rating ID found","red");
+							$("taberror").html('<div class="alert failure"><span class="closebtn">&times;</span><strong>Error : No session was found. Please, login first.</strong></div>').show();
 						}
 					}
-				})
-				.fail(function() {
+					else {
+						psAlert("Success","Review Successfully Added !!","green");
+						var count = data['countReview'];
+						$('form.submitreview').remove();
+						window.location.reload(false); 
+					}
+				}).fail(function() {
 					psAlert("Error","Review Ajax Failed unexpectedly","red");
 				});
 			});
-		});
+	});
 
-		function psAlert(title,content,theme,image){
-			$.jAlert({
-				'title': title,
-				'content': content,
-				'theme': theme,
-				'closeOnClick': true,
-				'backgroundColor': 'black',
-			});
-		}
-	</script>
-	<!-- Loading Google API -->
-	<script type="text/javascript">
-		var map;
-		function initMap() {
-			var latlng = new google.maps.LatLng(<?php echo $lat . "," . $lon; ?>);
-			map = new google.maps.Map(document.getElementById('map'), {
-				center: latlng,
-				zoom: 13,
-				clickableIcons: false,
-				disableDefaultUI: true,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			});
-			var marker = new google.maps.Marker({
-				position: latlng,
-				map: map,
-				title: 'Set lat/lon values for this property',
-				draggable: false
-			});
-		}
-	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmt9muKRq8oFoSiZQw-B0hcG-aBrvUNPo&callback=initMap"
-	async defer></script>
+	function psAlert(title,content,theme,image){
+		$.jAlert({
+			'title': title,
+			'content': content,
+			'theme': theme,
+			'closeOnClick': true,
+			'backgroundColor': 'black',
+		});
+	}
+</script>
+<!-- Loading Google API -->
+<script type="text/javascript">
+	var map;
+	function initMap() {
+		var latlng = new google.maps.LatLng(<?php echo $lat . "," . $lon; ?>);
+		map = new google.maps.Map(document.getElementById('map'), {
+			center: latlng,
+			zoom: 13,
+			clickableIcons: false,
+			disableDefaultUI: true,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		});
+		var marker = new google.maps.Marker({
+			position: latlng,
+			map: map,
+			title: 'Set lat/lon values for this property',
+			draggable: false
+		});
+	}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmt9muKRq8oFoSiZQw-B0hcG-aBrvUNPo&callback=initMap"
+async defer></script>
 </body>
 </html>

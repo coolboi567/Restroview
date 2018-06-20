@@ -118,7 +118,7 @@ else if(isset($_POST['register'])) {
 		$res=mysqli_query($db, $query);
 
 		if($res) {
-			$query = "SELECT email,id FROM restaurants where email='$email'";
+			$query = "SELECT email,id FROM users where email='$email'";
 			$first = mysqli_fetch_assoc(mysqli_query($db, $query));
 
 			$_SESSION['success'] = "Successfully registered user and now logged in.";
