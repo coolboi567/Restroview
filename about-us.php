@@ -36,7 +36,7 @@ require_once 'header.php';
 						<a class="nav-link" href="index.php"><i class="fas fa-home fa-lg"></i> Home</a>
 					</li>
 					<?php
-					if(!isset($_SESSION['user']) || empty($_SESSION['user']))
+					if(!isset($_SESSION['success']) || empty($_SESSION['success']))
 					{
 						?>
 						<li class="nav-item">

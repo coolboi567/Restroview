@@ -22,6 +22,10 @@ function test_input($data) {
 	return $data;
 }
 
+if(isset($_GET['user-profile']))
+	header("Location: user-profile.php");
+if(isset($_GET['res-profile']))
+	header("Location: res-profile.php");
 
 if(isset($_POST['login'])) {
 	$email = mysqli_real_escape_string($db, $_POST['email']);
@@ -49,6 +53,7 @@ if(isset($_POST['login'])) {
 
 		$res=mysqli_query($db, "SELECT id, email FROM users WHERE email='$email' AND password='$password'");
 		if(mysqli_num_rows($res)>0) {
+			$first = mysqli_fetch_assoc($res);
 			$_SESSION['success'] = "You are now logged in.";
 			$_SESSION['email'] = $first["email"];
 			$_SESSION['user'] = $first["id"];
@@ -229,7 +234,6 @@ else if(isset($_POST['res-register'])) {
 
 		$query = "INSERT INTO restaurants (email , password, phone, place, body, name, lat, lon, saltstring) 
 		VALUES('$email', '$password', '$phone', '$place', '$desc', '$name', '$lat', '$lon','$randstr')";
-		echo $query;
 		$res = mysqli_query($db, $query);
 
 		if($res) {

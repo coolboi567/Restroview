@@ -1,6 +1,57 @@
 <?php
-	require_once 'server.php';
-	require_once 'header.php';
+require_once 'server.php';
+/*
+if(isset($_POST['res-update']))
+{
+	$email = mysqli_real_escape_string($db, $_POST['email']);
+	$name = mysqli_real_escape_string($db, $_POST['name']);
+	$phone = mysqli_real_escape_string($db, $_POST['phone']);
+	$place = mysqli_real_escape_string($db, $_POST['place']);
+	$desc = mysqli_real_escape_string($db, $_POST['desc']);
+	$lat = mysqli_real_escape_string($db, $_POST['lat']);
+	$lon = mysqli_real_escape_string($db, $_POST['lon']);
+	$email = test_input($email);
+	if (empty($email)) {
+		array_push($errors, "Email is required");
+	}
+	elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		array_push($errors, "Invalid Email Format");
+	}
+	elseif (mysqli_num_rows(mysqli_query($db, "SELECT * FROM restaurants WHERE email='$email'")) >= 1) {
+		array_push($errors,"Restaurant email already exists. <a href=\"login.php\">Sign in</a>");
+	}
+	if (empty($place)) {
+		array_push($errors, "Place is required");
+	}
+	if (empty($phone)) {
+		array_push($errors, "Phone is required");
+	}
+	if (empty($desc)) {
+		array_push($errors, "Description is required");
+	}
+
+	if (count($errors)==0) {
+
+		$query = "UPDATE FROM restaurants SET email='$email', phone='$phone',  place='$place', body='$desc', name='$name', lat='$lat', lon='$lon'";
+		$res = mysqli_query($db, $query);
+
+		if($res) {
+			$query = "SELECT email,id FROM restaurants where email='$email'";
+			$first = mysqli_fetch_assoc(mysqli_query($db, $query));
+
+			$_SESSION['success'] = "Successfully registered restaurant and now logged in.";
+			$_SESSION['email'] = $first['email'];
+			$_SESSION['restaurant'] = $first['id'];
+			header('location: index.php');
+			exit();
+		}
+		else {
+			array_push($errors,"Failed to update  the restaurant");
+		}
+	}
+}
+*/
+require_once 'header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,25 +73,25 @@
 </head>
 <body>
 	<img src="Triangles-2.1s-200px.svg" class="loader">
-	<div class="container text-info">
+	<div class="container text-info mb-5">
 		<nav class="navbar navbar-expand-md bg-dark navbar-dark">
 			<a href="index.php"><img src="images/favicon.png" alt="Logo" style="width:50px;"></a>
 			&nbsp;&nbsp;
-			<a class="navbar-brand" href="index.php">RESTROVIEW</a>
+			<a class="navbar-brand" href="#">RESTROVIEW</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="collapsibleNavbar">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-home fa-lg"></i> Home</a>
+						<a class="nav-link" href="index.php"><i class="fas fa-home fa-lg"></i> Home</a>
 					</li>
 					<?php
 					if(!isset($_SESSION['success']) || empty($_SESSION['success']))
 					{
 						?>
 						<li class="nav-item">
-							<a class="active nav-link" href="restaurant-login.php"><i class="fas fa-utensils fa-lg"></i> Restaurant Portal</a>
+							<a class="nav-link" href="restaurant-login.php"><i class="fas fa-utensils fa-lg"></i> Restaurant Portal</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="login.php"><i class="fas fa-users fa-lg"></i> User Portal</a>
@@ -49,7 +100,7 @@
 					}
 					?>
 					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-map-marker-alt fa-lg"></i> Find us</a>
+						<a class="nav-link" href="about-us.php"><i class="fas fa-map-marker-alt fa-lg"></i> About us</a>
 					</li>
 				</ul>
 				<?php
@@ -75,21 +126,8 @@
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8">
 				<div>
-					<h2 class="text-white bg-info text-center">Restaurant Login</h2>
+					<h2 class="text-white bg-info text-center">Restaurant Profile</h2>
 				</div>
-				<form action="" method="POST">
-
-					<div class="form-group">
-						<label for="email">Email address:</label>
-						<input type="email" class="form-control" id="email" name="email">
-					</div>
-					<div class="form-group">
-						<label for="pwd">Password:</label>
-						<input type="password" class="form-control" id="pwd" name="pwd">
-					</div>
-					<input type="submit" name="res-login" value="LOGIN" class="btn btn-info" />
-					<a class="pl-3" href="restaurant-register.php">New User? Register!</a>
-				</form>
 			</div>
 			<div class="col-sm-2"></div>
 		</div>
@@ -110,5 +148,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 	<!--===============================================================================================-->
 	<script type="text/javascript" src="js/main.js"></script>
+	<!--===============================================================================================-->
 </body>
 </html>

@@ -2,6 +2,7 @@
 require_once 'server.php';
 require_once 'header.php';
 ?>
+
 <body>
 	<img src="Triangles-2.1s-200px.svg" class="loader">
 	<div class="container text-info">
@@ -25,7 +26,7 @@ require_once 'header.php';
 							<a class="nav-link" href="restaurant-login.php"><i class="fas fa-utensils fa-lg"></i> Restaurant Portal</a>
 						</li>
 						<li class="nav-item">
-							<a class="active nav-link" href="login.php"><i class="fas fa-users fa-lg"></i> User Portal</a>
+							<a class="nav-link" href="login.php"><i class="fas fa-users fa-lg"></i> User Portal</a>
 						</li>
 						<?php
 					}
@@ -57,20 +58,8 @@ require_once 'header.php';
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8">
 				<div>
-					<h2 class="text-white bg-info text-center">User Login</h2>
+					<h2 class="text-white bg-info text-center">User Profile</h2>
 				</div>
-				<form action="" method="POST">
-					<div class="form-group">
-						<label for="email">Email address:</label>
-						<input type="email" class="form-control" id="email" name="email">
-					</div>
-					<div class="form-group">
-						<label for="pwd">Password:</label>
-						<input type="password" class="form-control" id="pwd" name="pwd">
-					</div>
-					<input type="submit" name="login" value="LOGIN" class="btn btn-info" />
-					<a class="pl-3" href="register.php">New User? Register!</a>
-				</form>
 			</div>
 			<div class="col-sm-2"></div>
 		</div>

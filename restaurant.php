@@ -1,6 +1,10 @@
 <?php
 require_once 'server.php';
 
+if(isset($_SESSION['success']) && isset($_SESSION['user'])) {
+	$uid = $_SESSION['user'];
+}
+
 if(isset($_GET['id'])) {
 	$res = mysqli_query($db, "SELECT id, name, body, phone, email, place, lat, lon FROM `restaurants` WHERE `id` = {$_GET['id']}");
 	if(mysqli_num_rows($res)>0) {
@@ -87,6 +91,7 @@ require_once 'header.php';
 		}
 		else {
 			?>
+			<div id="taberror" style="display: none;"></div>
 			<div class="row pt-2">
 				<div class="col-sm-2"></div>
 				<div class="col-sm-8">
@@ -144,9 +149,9 @@ require_once 'header.php';
 					<?php
 					if(isset($_SESSION['user'])) {
 						?>
-						<div class="row pt-5">
-							Your Rating: &nbsp;&nbsp;
-							<select class="rating" id='rating_<?php echo $rid; ?>' data-id='rating_<?php echo $rid; ?>'>
+						<div class="row pt-3">
+							<h5>Your Rating: </h5> &nbsp;&nbsp;
+							<select class="rating" id='rating_<?php echo $rid; ?>' data-id='rating_<?php echo $rid; ?>' required="required">
 								<option value="" ></option>
 								<?php
 								for($i=1;$i<=5;$i++) {
@@ -159,10 +164,33 @@ require_once 'header.php';
 							</select>
 						</div>
 						<?php
+						$query = "SELECT COUNT(*) AS count FROM reviews as rev where ratingid=(SELECT id FROM ratings WHERE rid=$rid and uid=$uid)";
+						$result = mysqli_query($db,$query);
+						$fetchdata = mysqli_fetch_array($result);
+						$count = $fetchdata['count'];
+
+						if($count == 0) {
+							?>
+
+							<h5 class="row">Your Review: </h5>
+							<form class="submitreview">
+								<div class="form-group">
+									<input type="text" class="form-control" id="heading" required="required" name="heading" placeholder="Review Heading">
+								</div>
+								<div class="form-group">
+									<textarea class="form-control" type="text" id="review" name="review" placeholder="Feedback"></textarea> 
+								</div>
+								<input type="text" id="rid" name="rid" hidden="hidden" readonly="readonly" value="<?php echo $rid; ?>">
+								<input type="submit" value="Submit" class="btn btn-danger" />
+							</form>
+
+							<?php
+						}
 					}
 					?>
+
 					<div class="row pt-3">
-						<h4 class="pr-2">Ratings (<span id="countrating_<?php echo $rid; ?>"><?php echo $countRating; ?></span>) : </h4>
+						<h4 class="pr-2">Average Ratings (<span id="countrating_<?php echo $rid; ?>"><?php echo $countRating; ?></span>) : </h4>
 						<div class="avgrating">
 							<?php
 							if(!is_numeric($averageRating))
@@ -177,7 +205,7 @@ require_once 'header.php';
 							}
 							?>
 						</div>
-						<h3 class="pl-2">(<span id='avgrating_<?php echo $rid; ?>'><?php echo $averageRating; ?></span>)</h3>
+						<h3 class="pl-2 ">(<span id='avgrating_<?php echo $rid; ?>'><?php echo $averageRating; ?></span>)</h3>
 					</div>
 					<div class="row pt-3 review">
 						<?php
@@ -246,6 +274,8 @@ require_once 'header.php';
 	<!--===============================================================================================-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--===============================================================================================-->
+	<script type="text/javascript" src="js/jAlert-v3.min.js"></script>
+	<!--===============================================================================================-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 	<!--===============================================================================================-->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
@@ -293,7 +323,52 @@ require_once 'header.php';
 					}
 				}
 			});
+			$("form.submitreview").on("submit",function(e) {
+				e.preventDefault();
+				var heading = $("#heading").val();
+				var review = $("#review").val();
+				var rid = $("#rid").val();
+				// AJAX Request
+				$.ajax({
+					url: 'review-ajax.php',
+					type: 'post',
+					data: { rid: rid, heading: heading, review: review },
+					dataType: 'json',
+					success: function(data) {
+						// Update average
+						if(data['error']) {
+							if(data['error']=="No Ratingid"){
+								psAlert("Warning","Please give ratings befor submiting review","yellow");
+								$("taberror").html('<div class="alert failure"><span class="closebtn">&times;</span><strong>Error : Please give rating before submiting review.</strong></div>').show();
+							}
+							if(data['error']=="No Session") {
+								psAlert("Error","Not Rating ID found","red");
+								$("taberror").html('<div class="alert failure"><span class="closebtn">&times;</span><strong>Error : No session was found. Please, login first.</strong></div>').show();
+							}
+						}
+						else {
+							psAlert("Success","Review Successfully Added !!","green");
+							var count = data['countReview'];
+							$('form.submitreview').remove();
+							window.location.reload(false); 
+						}
+					}
+				})
+				.fail(function() {
+					psAlert("Error","Review Ajax Failed unexpectedly","red");
+				});
+			});
 		});
+
+		function psAlert(title,content,theme,image){
+			$.jAlert({
+				'title': title,
+				'content': content,
+				'theme': theme,
+				'closeOnClick': true,
+				'backgroundColor': 'black',
+			});
+		}
 	</script>
 	<!-- Loading Google API -->
 	<script type="text/javascript">

@@ -36,7 +36,7 @@ require_once 'header.php';
 						<a class="nav-link" href="index.php"><i class="fas fa-home fa-lg"></i> Home</a>
 					</li>
 					<?php
-					if(!isset($_SESSION['user']) || empty($_SESSION['user']))
+					if(!isset($_SESSION['success']) || empty($_SESSION['success']))
 					{
 						?>
 						<li class="nav-item">
@@ -114,7 +114,7 @@ require_once 'header.php';
 					</div>
 					<div class="form-group">
 						<label for="desc">Description:</label>
-						<textarea class="form-control" type="text" name="desc" value="Describe about the Restaurant. What is special about this restaurant. And Which category of food and drinks are available."></textarea> 
+						<textarea class="form-control" type="text" name="desc" placeholder="Describe about the Restaurant. What is special about this restaurant. And Which category of food and drinks are available."></textarea> 
 					</div>
 					<div class="form-group">
 						<label for="latlon">Location:</label>

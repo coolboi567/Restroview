@@ -118,29 +118,29 @@ require_once 'header.php';
 				},
 				function(data, status){
 					/*
-						Data: {"result":1,"results":[{"id":"1","name":"Brewsky Restaurant and Bar","body":null,"lat":"12.97962805","lon":"77.64082544"}]}
-						Status: success
-						*/
-						var obj = jQuery.parseJSON(data);
-						if(obj.error)
-							$("#results").html('<h4 class="text-danger">Invalid Request !!</h4>');
-						else if(status=="success") {
-							if(obj.result>0) {
-								$("#results").html(' ');	// Clearing the div before appending to avoid redundancy
-								var rest, el,str;
-								for(var i = 0; i < obj.results.length; i++) {
-									rest = obj.results[i];
-									str = '<div class="col-8"><h3>'+rest.sn+') <a href=restaurant.php?id='+rest.id+'>'+rest.name+'</a></h3></div><div class="col-4"><a href="https://www.google.com/maps/dir/?api=1&destination='+rest.lat+","+rest.lon+'"&dir_action=navigate" target="_blank">Navigate</a></div>';
-									el = $("<div class='row'></div>").html(str);
+					Data: {"result":1,"results":[{"id":"1","name":"Brewsky Restaurant and Bar","body":null,"lat":"12.97962805","lon":"77.64082544"}]}
+					Status: success
+					*/
+					var obj = jQuery.parseJSON(data);
+					if(obj.error)
+						$("#results").html('<h4 class="text-danger">Invalid Request !!</h4>');
+					else if(status=="success") {
+						if(obj.result>0) {
+							$("#results").html(' ');	// Clearing the div before appending to avoid redundancy
+							var rest, el,str;
+							for(var i = 0; i < obj.results.length; i++) {
+								rest = obj.results[i];
+								str = '<div class="col-8"><h3>'+rest.sn+') <a href=restaurant.php?id='+rest.id+'>'+rest.name+'</a></h3></div><div class="col-4"><a href="https://www.google.com/maps/dir/?api=1&destination='+rest.lat+","+rest.lon+'"&dir_action=navigate" target="_blank">Navigate</a></div>';
+								el = $("<div class='row'></div>").html(str);
 
-									$("#results").append(el);
-								}
-							}
-							else {
-								$("#results").html('<h3 class="text-danger">No Results Found !</h3>');
+								$("#results").append(el);
 							}
 						}
-					});
+						else {
+							$("#results").html('<h3 class="text-danger">No Results Found !</h3>');
+						}
+					}
+				});
 			});
 		});
 	</script>

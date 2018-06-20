@@ -16,7 +16,7 @@ $('#myBtn').on("click", function(){
 /*=============================================================*/
 $('.closebtn').on('click', function(){
 	$(this).parent().slideUp("slow", function(){
-		$(this).remove();
+		// $(this).remove();
 	});
 })
 /*=============================================================*/

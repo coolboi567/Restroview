@@ -33,7 +33,7 @@ CREATE TABLE `ratings` (
   KEY `uid` (`uid`),
   CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE,
   CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `ratings` (
 
 LOCK TABLES `ratings` WRITE;
 /*!40000 ALTER TABLE `ratings` DISABLE KEYS */;
+INSERT INTO `ratings` VALUES (5,1,2,3,'2018-06-19 19:00:31'),(6,2,2,2,'2018-06-19 20:06:56'),(13,2,3,3,'2018-06-19 20:17:21'),(14,2,4,1,'2018-06-20 00:25:39');
 /*!40000 ALTER TABLE `ratings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,14 +58,14 @@ CREATE TABLE `restaurants` (
   `name` varchar(30) NOT NULL,
   `email` varchar(30) NOT NULL,
   `phone` bigint(15) NOT NULL,
-  `password` varchar(30) NOT NULL,
+  `password` varchar(36) NOT NULL,
   `saltstring` varchar(21) NOT NULL,
   `body` text NOT NULL,
   `place` varchar(40) NOT NULL,
   `lat` decimal(10,8) DEFAULT NULL,
   `lon` decimal(10,8) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,6 +74,7 @@ CREATE TABLE `restaurants` (
 
 LOCK TABLES `restaurants` WRITE;
 /*!40000 ALTER TABLE `restaurants` DISABLE KEYS */;
+INSERT INTO `restaurants` VALUES (1,'Brewsky Restaurant and Bar','abc@gmail.com',1232321654,'857ca9743ab4298ed704832d37eefee3','RKyBstSWUZBtQXOKnplQ','Best Quality Brewed Beer and Continental Food.\r\nAvailable in the heart of the city.','Bangalore',12.97962805,77.64082544),(2,'Big Pitcher Restaurant and Bar','bigpitcher@gmail.com',1234657987,'87ec0fbd629a9d5b54ae86e0c70b044d','FCZqTc36T493vxdo702y','Cool, sizable hangout for bar bites and house-brewed beers, plus pub quizzes and stand-up comedy.','Bangalore',12.96023380,77.64691137);
 /*!40000 ALTER TABLE `restaurants` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +94,7 @@ CREATE TABLE `reviews` (
   PRIMARY KEY (`id`),
   KEY `ratingid` (`ratingid`),
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`ratingid`) REFERENCES `ratings` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,6 +103,7 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,13,'Amazingly Floor wise Division','I just fell in love with everything there. I was in cloud nine when I was there','2018-06-19 20:36:51'),(2,14,'average but over priced','Normal food but extremely over priced','2018-06-20 00:29:24');
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,10 +118,10 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `password` varchar(30) NOT NULL,
+  `password` varchar(36) NOT NULL,
   `saltstring` varchar(21) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +130,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (2,'123','123@gmail.com','ca4ebd9f4c936a7ad625e8b12fa8b128','r0mb2qHDm6KPRzJ6Iyd8'),(3,'Test','test@email.com','19b5cd2417f7e5c0c7b68ea1c50d72e8','XAJnI1RqXLnYwB5FARkA'),(4,'Prashant','prashant@gmail.com','43e6438dd34b767f04e708386fe44ca7','XHBK6dhajqt6HVs4mLyR');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -139,4 +143,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-19  3:10:30
+-- Dump completed on 2018-06-20  6:24:44
