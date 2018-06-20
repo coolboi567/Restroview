@@ -12,7 +12,7 @@
 	<!--===============================================================================================-->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 	<!--===============================================================================================-->
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 	<!--===============================================================================================-->
 	<link rel="stylesheet" href="css/fontawesome-stars.css">
 	<!--===============================================================================================-->
